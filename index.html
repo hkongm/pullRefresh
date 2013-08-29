@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>下拉刷新</title>
+    <meta content='width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0' name='viewport' />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/foundation-icons.css">
+  </head>
+  
+  <body>
+    <style>
+      * {
+        padding:0;
+        margin:0
+      }
+      #pullBar {
+        height:40px;
+        line-height:40px;
+        margin-top:-40px;
+        text-align: center;
+        color:black;
+        background-image: linear-gradient(top, rgb(255, 255, 255) 7%, rgb(228, 229, 240) 100%);
+        background-image: -o-linear-gradient(top, rgb(255, 255, 255) 7%, rgb(228, 229, 240) 100%);
+        background-image: -moz-linear-gradient(top, rgb(255, 255, 255) 7%, rgb(228, 229, 240) 100%);
+        background-image: -webkit-linear-gradient(top, rgb(255, 255, 255) 7%, rgb(228, 229, 240) 100%);
+        background-image: -ms-linear-gradient(top, rgb(255, 255, 255) 7%, rgb(228, 229, 240) 100%);
+      }
+      #pullBar i {
+        font-size:20px;
+        vertical-align:-2px;
+      }
+      #pullBar .fi-loop {
+        display:inline-block;
+        -moz-animation:rotate 2s linear infinite;
+        -webkit-animation:rotate 2s linear infinite;
+        animation:rotate 2s linear infinite;
+      }
+      #pullBar .fi-x {
+        float:right;
+        margin-right:.5em;
+      }
+      .trans {
+        -webkit-transition:all 0.3s;
+        -moz-transition:all 0.3s;
+        -ms-transition:all 0.3s;
+        transition:all 0.3s;
+      }
+      .shown {
+        -webkit-transform:translateY(40px);
+        -moz-transform:translateY(40px);
+        -ms-transform:translateY(40px);
+        transform:translateY(40px);
+      }
+      @-moz-keyframes rotate {
+        0% {
+          -moz-transform:rotate(0deg);
+        }
+        100% {
+          -moz-transform:rotate(360deg);
+        }
+      }
+      @-webkit-keyframes rotate {
+        0% {
+          -webkit-transform:rotate(0deg);
+        }
+        100% {
+          -webkit-transform:rotate(360deg);
+        }
+      }
+      @keyframes rotate {
+        0% {
+          -webkit-transform:rotate(0deg);
+        }
+        100% {
+          -webkit-transform:rotate(360deg);
+        }
+      }
+    </style>
+    <div id="wrapper">
+      <div class="jumbotron">
+        <h1>下拉刷新模块</h1>
+      </div>
+      <h4>说明</h4>
+      <ul>
+        <li>使用移动设备，或开启chrome的触摸模拟。</li>
+        <li>Zepto、jQuery插件形式。</li>
+        <li>下拉屏幕，出现刷新提示条。</li>
+        <li>使用CSS3制作动画效果，非TOP实现，性能更好。</li>
+        <li>使用了字体符号，非图片。</li>
+        <li>问题列表
+          <ul>
+            <li>AJAX异步，无法捕捉return，改为同步后async:false需要大数据量测试（模拟延迟）
+              <span class="label label-danger">等待</span>
+            </li>
+            <li>非首屏下拉触发
+              <span class="label label-danger">FIXED</span>
+            </li>
+            <li>上滑+冒泡
+              <span class="label label-danger">FIXED</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <h4>调用</h4>
+      <blockquote>
+        <code>&lt;script type="text/javascript" src="js/pull.js"&gt;&lt;/script&gt;</code>
+        <pre>$('#wrapper').pullBar();</pre>
+      </blockquote>
+    </div>
+    <script src="js/zepto.js"></script>
+    <script src="js/pull.js"></script>
+    <script>
+      $('#wrapper').pullBar({
+        callback: function() {
+          var res = true;
+          $.ajax({
+            url: '/demo/slider/1.json',
+            async: false,
+            success: function(data) {
+              res = true;
+            },
+            error: function(data) {
+              res = false;
+            }
+          })
+          return res;
+        }
+      });
+    </script>
+  </body>
+
+</html>
